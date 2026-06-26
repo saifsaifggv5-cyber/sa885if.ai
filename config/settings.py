@@ -19,7 +19,7 @@ class Settings(BaseSettings):
     # ═══════════════════════════════════════════
     # قاعدة البيانات
     # ═══════════════════════════════════════════
-    DATABASE_URL: str = "postgresql+asyncpg://postgres:postgres@localhost:5432/saif_ai"
+    DATABASE_URL: str = "sqlite+aiosqlite:///./saif_ai.db"
 
     # ═══════════════════════════════════════════
     # Redis

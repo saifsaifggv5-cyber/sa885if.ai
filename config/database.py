@@ -5,14 +5,21 @@ from typing import AsyncGenerator
 from config.settings import settings
 
 # ── إنشاء المحرك غير المتزامن ─────────────────
-engine = create_async_engine(
-    settings.DATABASE_URL,
-    echo=settings.DEBUG,       # طباعة استعلامات SQL في وضع التطوير
-    pool_size=10,              # حجم تجمع الاتصالات
-    max_overflow=20,           # اتصالات إضافية عند الضغط
-    pool_pre_ping=True,        # فحص الاتصال قبل الاستخدام
-    pool_recycle=3600          # إعادة تدوير الاتصالات كل ساعة
-)
+# ── إنشاء المحرك غير المتزامن ─────────────────
+if settings.DATABASE_URL.startswith("sqlite"):
+    engine = create_async_engine(
+        settings.DATABASE_URL,
+        echo=settings.DEBUG
+    )
+else:
+    engine = create_async_engine(
+        settings.DATABASE_URL,
+        echo=settings.DEBUG,
+        pool_size=10,
+        max_overflow=20,
+        pool_pre_ping=True,
+        pool_recycle=3600
+    )
 
 # ── إنشاء مصنع الجلسات غير المتزامنة ──────────
 AsyncSessionLocal = async_sessionmaker(
